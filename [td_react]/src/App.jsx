@@ -4,14 +4,6 @@ import formationlogo from '../public/logo.png'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function MainContent(){
-    let content = "Ici, nous afficherons des informations interessantes :)"
-    return (
-        <div>
-            <h3>{content}</h3>
-        </div>
-    )
-}
 function Header() {
     const titre = 'Introduction à React'
     const desc = 'A la découverte des premières notions de React'
@@ -26,7 +18,22 @@ function Header() {
         </header>
     )
 }
-
+function MainContent(){
+    let content = "Ici, nous afficherons des informations interessantes :)"
+    return (
+        <div>
+            <h3>{content}</h3>
+        </div>
+    )
+}
+function Footer(){
+    let footer = "Tous droits réservés - ELKIHEL Fatima Zahra"
+    return (
+        <footer className={ "footer"}>
+            <h3>{footer}</h3>
+        </footer>
+    )
+}
 function App() {
     const [count, setCount] = useState(0)
 
@@ -54,6 +61,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+        <Footer/>
     </>
   )
 }
