@@ -5,7 +5,53 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import React, {  useEffect } from 'react';
 
+import data from "../../data.json"; // Importation du fichier data.json
 
+
+// Fonction pour tirer un élément aléatoire
+const getRandomItem = (list) => {
+    const randomIndex = Math.floor(Math.random() * list.length);
+    return list[randomIndex];
+};
+
+// Composant principal
+const App = () => {
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleRandomClick = () => {
+        const randomItem = getRandomItem(data);
+        setSelectedItem(randomItem);
+    };
+
+    return (
+        <div className="container">
+            <h1>Afficher les détails d'une note</h1>
+            <button onClick={handleRandomClick} className="random-button">
+                Tirer une note au hasard
+            </button>
+            {selectedItem && (
+                <div className="details">
+                    <h2>Détails de la Note</h2>
+                    <p>
+                        <strong>Course:</strong> {selectedItem.course}
+                    </p>
+                    <p>
+                        <strong>Étudiant:</strong> {selectedItem.student.firstname} {selectedItem.student.lastname}
+                    </p>
+                    <p>
+                        <strong>ID:</strong> {selectedItem.student.id}
+                    </p>
+                    <p>
+                        <strong>Date:</strong> {selectedItem.date}
+                    </p>
+                    <p>
+                        <strong>Note:</strong> {selectedItem.grade}
+                    </p>
+                </div>
+            )}
+        </div>
+    );
+};
 
 function Header() {
     const titre = 'Introduction à React'
@@ -85,15 +131,20 @@ function MainContent() {
 }
 
 
-function Footer(){
-    let footer = "Tous droits réservés - ELKIHEL Fatima Zahra"
+function Footer() {
+    const prenom = "Fatima Zahra";
+    const nom = "Elkihel";
+    const now = new Date();
+    const year = now.getFullYear();
+
     return (
-        <footer className={ "footer"}>
-            <h3>{footer}</h3>
+        <footer className="footer">
+            <h3>© {year} - {prenom}.{nom}, Tous droits réservés.</h3>
         </footer>
-    )
+    );
 }
-function App() {
+
+function Appli() {
     const [count, setCount] = useState(0)
 
   return (
@@ -108,7 +159,7 @@ function App() {
                 <img src={reactLogo} className="logo react" alt="React logo"/>
             </a>
         </div>
-
+        <App />
         <div className="card">
             <button onClick={() => setCount((count) => count + 1)}>
                 count is {count}
@@ -125,4 +176,4 @@ function App() {
   )
 }
 
-export default App
+export default Appli
