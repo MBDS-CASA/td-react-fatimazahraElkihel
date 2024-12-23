@@ -6,6 +6,12 @@
 }
 footer {
   text-align: center;
+  background-color: #baa6e0;
+  text-emphasis-color: #f9f9f9;
+}
+
+date{
+  color: #757474;
 }
 .logo {
   height: 6em;

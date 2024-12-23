@@ -3,6 +3,9 @@ import reactLogo from './assets/react.svg'
 import formationlogo from '../public/logo.png'
 import viteLogo from '/vite.svg'
 import './App.css'
+import React, {  useEffect } from 'react';
+
+
 
 function Header() {
     const titre = 'Introduction à React'
@@ -18,14 +21,70 @@ function Header() {
         </header>
     )
 }
-function MainContent(){
-    let content = "Ici, nous afficherons des informations interessantes :)"
+
+function MainContent() {
+    const [dateTimeMessage, setDateTimeMessage] = useState('');
+
+    useEffect(() => {
+        const days = [
+            'dimanche',
+            'lundi',
+            'mardi',
+            'mercredi',
+            'jeudi',
+            'vendredi',
+            'samedi',
+        ];
+        const months = [
+            'janvier',
+            'février',
+            'mars',
+            'avril',
+            'mai',
+            'juin',
+            'juillet',
+            'août',
+            'septembre',
+            'octobre',
+            'novembre',
+            'décembre',
+        ];
+
+        const updateDateTimeMessage = () => {
+            const now = new Date();
+
+            // Récupérer les différentes parties de la date et de l'heure
+            const dayName = days[now.getDay()];
+            const day = now.getDate();
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            // Construire le message
+            const message = `Bonjour, on est le ${dayName}, ${day} ${monthName} ${year} et il est ${hours}:${minutes}:${seconds}`;
+            setDateTimeMessage(message);
+        };
+
+        // Mettre à jour le message toutes les secondes
+        const intervalId = setInterval(updateDateTimeMessage, 1000);
+
+        // Mettre à jour immédiatement sans attendre une seconde
+        updateDateTimeMessage();
+
+        // Nettoyer l'intervalle au démontage du composant
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
-        <div>
-            <h3>{content}</h3>
+        <div className="date">
+            <h3>{dateTimeMessage}</h3>
         </div>
-    )
+    );
 }
+
+
 function Footer(){
     let footer = "Tous droits réservés - ELKIHEL Fatima Zahra"
     return (
