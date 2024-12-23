@@ -1,17 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import formationlogo from '../public/logo.png'
-import viteLogo from '/vite.svg'
-import './App.css'
-import React, {  useEffect } from 'react';
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import formationlogo from '../public/logo.png';
+import viteLogo from '/vite.svg';
+import './App.css';
+import React, { useEffect } from 'react';
 
 import data from "../../data.json"; // Importation du fichier data.json
-
 
 // Fonction pour tirer un élément aléatoire
 const getRandomItem = (list) => {
     const randomIndex = Math.floor(Math.random() * list.length);
     return list[randomIndex];
+};
+
+// Composant Menu
+const Menu = () => {
+    const menuItems = ["Notes", "Etudiants", "Matières", "A propos"];
+
+    const handleClick = (item) => {
+        alert(`Vous avez cliqué sur : ${item}`);
+    };
+
+    return (
+        <nav className="menu">
+            <ul>
+                {menuItems.map((item, index) => (
+                    <li key={index} onClick={() => handleClick(item)}>
+                        {item}
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
 };
 
 // Composant principal
@@ -54,8 +74,8 @@ const App = () => {
 };
 
 function Header() {
-    const titre = 'Introduction à React'
-    const desc = 'A la découverte des premières notions de React'
+    const titre = 'Introduction à React';
+    const desc = 'A la découverte des premières notions de React';
     return (
         <header>
             <h1>Header</h1>
@@ -65,7 +85,7 @@ function Header() {
             <h1>{titre}</h1>
             <h2>{desc}</h2>
         </header>
-    )
+    );
 }
 
 function MainContent() {
@@ -130,7 +150,6 @@ function MainContent() {
     );
 }
 
-
 function Footer() {
     const prenom = "Fatima Zahra";
     const nom = "Elkihel";
@@ -145,35 +164,38 @@ function Footer() {
 }
 
 function Appli() {
-    const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0);
 
-  return (
-    <>
-        <div>
-            <Header/>
-            <MainContent/>
-            <a href="https://vite.dev" target="_blank">
-                <img src={viteLogo} className="logo" alt="Vite logo"/>
-            </a>
-            <a href="https://react.dev" target="_blank">
-                <img src={reactLogo} className="logo react" alt="React logo"/>
-            </a>
-        </div>
-        <App />
-        <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>
-                count is {count}
-            </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-        <Footer/>
-    </>
-  )
+    return (
+        <>
+            <Menu />
+            <div>
+                <Header />
+                <MainContent />
+                <a href="https://vite.dev" target="_blank">
+                    <img src={viteLogo} className="logo" alt="Vite logo" />
+                </a>
+                <a href="https://react.dev" target="_blank">
+                    <img src={reactLogo} className="logo react" alt="React logo" />
+                </a>
+
+            </div>
+            <App />
+            <div className="card">
+                <button onClick={() => setCount((count) => count + 1)}>
+                    count is {count}
+                </button>
+                <p>
+                    Edit <code>src/App.jsx</code> and save to test HMR
+                </p>
+            </div>
+            <p className="read-the-docs">
+                Click on the Vite and React logos to learn more
+            </p>
+            <Footer />
+        </>
+    );
 }
 
-export default Appli
+export default Appli;
+
