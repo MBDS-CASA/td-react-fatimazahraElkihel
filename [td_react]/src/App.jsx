@@ -1,159 +1,172 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import formationlogo from '../public/logo.png';
-import viteLogo from '/vite.svg';
+import { useState, useEffect } from 'react';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    IconButton,
+} from '@mui/material';
+import { School, People, Book, Info } from '@mui/icons-material';
 import './App.css';
-import React, { useEffect } from 'react';
+import formationlogo from '../public/logo.png';
+import data from '../../data.json';
 
-import data from "../../data.json"; // Importation du fichier data.json
+// Composants individuels
+const Notes = () => (
+    <TableContainer component={Paper} className="table-container">
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Course</TableCell>
+                    <TableCell>Grade</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((item, index) => (
+                    <TableRow
+                        key={item.unique_id}
+                        className={index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
+                    >
+                        <TableCell>{item.unique_id}</TableCell>
+                        <TableCell>{item.course}</TableCell>
+                        <TableCell>{item.grade}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+);
 
-// Fonction pour tirer un élément aléatoire
-const getRandomItem = (list) => {
-    const randomIndex = Math.floor(Math.random() * list.length);
-    return list[randomIndex];
-};
+const Etudiants = () => (
+    <TableContainer component={Paper} className="table-container">
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>First Name</TableCell>
+                    <TableCell>Last Name</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((item, index) => (
+                    <TableRow
+                        key={item.student.id}
+                        className={index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
+                    >
+                        <TableCell>{item.student.id}</TableCell>
+                        <TableCell>{item.student.firstname}</TableCell>
+                        <TableCell>{item.student.lastname}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+);
 
-// Composants individuels pour chaque item du menu
-const Notes = () => <div>Contenu de la section Notes</div>;
-const Etudiants = () => <div>Contenu de la section Étudiants</div>;
-const Matieres = () => <div>Contenu de la section Matières</div>;
-const APropos = () => <div>Contenu de la section À propos</div>;
+const Matieres = () => (
+    <TableContainer component={Paper} className="table-container">
+        <Table>
+            <TableHead>
+                <TableRow>
+                    <TableCell>Course</TableCell>
+                    <TableCell>Date</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {data.map((item, index) => (
+                    <TableRow
+                        key={item.unique_id}
+                        className={index % 2 === 0 ? 'table-row-even' : 'table-row-odd'}
+                    >
+                        <TableCell>{item.course}</TableCell>
+                        <TableCell>{item.date}</TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
+    </TableContainer>
+);
+
+const APropos = () => (
+    <div className="about-container">
+        <h2>À propos</h2>
+        <p>
+            Ce projet est une démonstration des capacités de React <br/>
+            et Material UI pour créer des interfaces utilisateur <br/>
+            dynamiques et interactives.
+        </p>
+    </div>
+);
 
 // Composant Menu
-const Menu = ({ menuItems, onMenuClick, activeItem }) => {
-    return (
-        <nav className="menu">
-            <ul>
-                {menuItems.map((item) => (
-                    <li
-                        key={item.name}
-                        className={activeItem === item.name ? 'active' : ''}
-                        onClick={() => onMenuClick(item.name)}
-                    >
-                        {item.label}
-                    </li>
-                ))}
-            </ul>
-        </nav>
-    );
-};
+const Menu = ({ menuItems, onMenuClick, activeItem }) => (
+    <nav className="menu">
+        <img src={formationlogo} alt="Logo" className="menu-logo-img" />
+        <ul>
+            {menuItems.map((item) => (
+                <li
+                    key={item.name}
+                    className={activeItem === item.name ? 'active' : ''}
+                    onClick={() => onMenuClick(item.name)}
+                >
+                    <span className="menu-icon">{item.icon}</span>
+                    {item.label}
+                </li>
+            ))}
+        </ul>
+    </nav>
+);
 
-// Composant principal
-const App = () => {
-    const [selectedItem, setSelectedItem] = useState(null);
-    const handleRandomClick = () => {
-        const randomItem = getRandomItem(data);
-        setSelectedItem(randomItem);
-    };
+// Composants Header, Footer, MainContent
+const Header = () => (
+    <header>
+        <h1>Université Côte d'Azur</h1>
+        <h2>Bienvenue sur le compte universitaire</h2>
+    </header>
+);
 
-    return (
-        <div className="container">
-            <h1>Afficher les détails d'une note</h1>
-            <button onClick={handleRandomClick} className="random-button">
-                Tirer une note au hasard
-            </button>
-            {selectedItem && (
-                <div className="details">
-                    <h2>Détails de la Note</h2>
-                    <p>
-                        <strong>Course:</strong> {selectedItem.course}
-                    </p>
-                    <p>
-                        <strong>Étudiant:</strong> {selectedItem.student.firstname} {selectedItem.student.lastname}
-                    </p>
-                    <p>
-                        <strong>ID:</strong> {selectedItem.student.id}
-                    </p>
-                    <p>
-                        <strong>Date:</strong> {selectedItem.date}
-                    </p>
-                    <p>
-                        <strong>Note:</strong> {selectedItem.grade}
-                    </p>
-                </div>
-            )}
-        </div>
-    );
-};
-
-function Header() {
-    const titre = 'Introduction à React';
-    const desc = 'A la découverte des premières notions de React';
-    return (
-        <header>
-            <h1>Header</h1>
-            <a href="" target="_blank">
-                <img src={formationlogo} className="logo" alt="Vite logo"/>
-            </a>
-            <h1>{titre}</h1>
-            <h2>{desc}</h2>
-        </header>
-    );
-}
-
-function MainContent() {
+const MainContent = () => {
     const [dateTimeMessage, setDateTimeMessage] = useState('');
 
     useEffect(() => {
-        const days = [
-            'dimanche',
-            'lundi',
-            'mardi',
-            'mercredi',
-            'jeudi',
-            'vendredi',
-            'samedi',
-        ];
-        const months = [
-            'janvier',
-            'février',
-            'mars',
-            'avril',
-            'mai',
-            'juin',
-            'juillet',
-            'août',
-            'septembre',
-            'octobre',
-            'novembre',
-            'décembre',
-        ];
-
         const updateDateTimeMessage = () => {
             const now = new Date();
+            const days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+            const months = [
+                'janvier',
+                'février',
+                'mars',
+                'avril',
+                'mai',
+                'juin',
+                'juillet',
+                'août',
+                'septembre',
+                'octobre',
+                'novembre',
+                'décembre',
+            ];
 
-            // Récupérer les différentes parties de la date et de l'heure
-            const dayName = days[now.getDay()];
-            const day = now.getDate();
-            const monthName = months[now.getMonth()];
-            const year = now.getFullYear();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-
-            // Construire le message
-            const message = `Bonjour, on est le ${dayName}, ${day} ${monthName} ${year} et il est ${hours}:${minutes}:${seconds}`;
+            const message = `Bonjour, on est le ${days[now.getDay()]}, ${now.getDate()} ${
+                months[now.getMonth()]
+            } ${now.getFullYear()} et il est ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
             setDateTimeMessage(message);
         };
 
-        // Mettre à jour le message toutes les secondes
         const intervalId = setInterval(updateDateTimeMessage, 1000);
-
-        // Mettre à jour immédiatement sans attendre une seconde
         updateDateTimeMessage();
 
-        // Nettoyer l'intervalle au démontage du composant
         return () => clearInterval(intervalId);
     }, []);
 
-    return (
-        <div className="date">
-            <h3>{dateTimeMessage}</h3>
-        </div>
-    );
-}
+    return <div className="date"><h3>{dateTimeMessage}</h3></div>;
+};
 
-function Footer() {
+const Footer = () => {
     const prenom = "Fatima Zahra";
     const nom = "Elkihel";
     const now = new Date();
@@ -161,20 +174,23 @@ function Footer() {
 
     return (
         <footer className="footer">
-            <h3>© {year} - {prenom}.{nom}, Tous droits réservés.</h3>
+            <div className="footer-content">
+                <p>© {year} - {prenom}.{nom}, Tous droits réservés.</p>
+                <p>Créé avec ❤ en React et Material UI.</p>
+            </div>
         </footer>
     );
-}
+};
 
-function Appli() {
-    const [count, setCount] = useState(0);
+// Composant Principal
+const Appli = () => {
     const [activeMenu, setActiveMenu] = useState("Notes");
 
     const menuItems = [
-        { name: "Notes", label: "Notes", component: <Notes /> },
-        { name: "Etudiants", label: "Étudiants", component: <Etudiants /> },
-        { name: "Matieres", label: "Matières", component: <Matieres /> },
-        { name: "APropos", label: "À propos", component: <APropos /> },
+        { name: "Notes", label: "Notes", icon: <School />, component: <Notes /> },
+        { name: "Etudiants", label: "Étudiants", icon: <People />, component: <Etudiants /> },
+        { name: "Matieres", label: "Matières", icon: <Book />, component: <Matieres /> },
+        { name: "APropos", label: "À propos", icon: <Info />, component: <APropos /> },
     ];
 
     const activeComponent = menuItems.find((item) => item.name === activeMenu)?.component;
@@ -187,33 +203,13 @@ function Appli() {
                 activeItem={activeMenu}
             />
             <div>
+                <Header />
+                <MainContent />
                 <main>{activeComponent}</main>
-                <Header/>
-                <MainContent/>
-                <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo"/>
-                </a>
-                <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo"/>
-                </a>
-
             </div>
-            <App/>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>
-                    count is {count}
-                </button>
-                <p>
-                    Edit <code>src/App.jsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
             <Footer />
-
         </>
     );
-}
+};
 
 export default Appli;
