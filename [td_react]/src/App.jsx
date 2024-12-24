@@ -13,20 +13,24 @@ const getRandomItem = (list) => {
     return list[randomIndex];
 };
 
+// Composants individuels pour chaque item du menu
+const Notes = () => <div>Contenu de la section Notes</div>;
+const Etudiants = () => <div>Contenu de la section Étudiants</div>;
+const Matieres = () => <div>Contenu de la section Matières</div>;
+const APropos = () => <div>Contenu de la section À propos</div>;
+
 // Composant Menu
-const Menu = () => {
-    const menuItems = ["Notes", "Etudiants", "Matières", "A propos"];
-
-    const handleClick = (item) => {
-        alert(`Vous avez cliqué sur : ${item}`);
-    };
-
+const Menu = ({ menuItems, onMenuClick, activeItem }) => {
     return (
         <nav className="menu">
             <ul>
-                {menuItems.map((item, index) => (
-                    <li key={index} onClick={() => handleClick(item)}>
-                        {item}
+                {menuItems.map((item) => (
+                    <li
+                        key={item.name}
+                        className={activeItem === item.name ? 'active' : ''}
+                        onClick={() => onMenuClick(item.name)}
+                    >
+                        {item.label}
                     </li>
                 ))}
             </ul>
@@ -37,7 +41,6 @@ const Menu = () => {
 // Composant principal
 const App = () => {
     const [selectedItem, setSelectedItem] = useState(null);
-
     const handleRandomClick = () => {
         const randomItem = getRandomItem(data);
         setSelectedItem(randomItem);
@@ -165,22 +168,37 @@ function Footer() {
 
 function Appli() {
     const [count, setCount] = useState(0);
+    const [activeMenu, setActiveMenu] = useState("Notes");
+
+    const menuItems = [
+        { name: "Notes", label: "Notes", component: <Notes /> },
+        { name: "Etudiants", label: "Étudiants", component: <Etudiants /> },
+        { name: "Matieres", label: "Matières", component: <Matieres /> },
+        { name: "APropos", label: "À propos", component: <APropos /> },
+    ];
+
+    const activeComponent = menuItems.find((item) => item.name === activeMenu)?.component;
 
     return (
         <>
-            <Menu />
+            <Menu
+                menuItems={menuItems}
+                onMenuClick={setActiveMenu}
+                activeItem={activeMenu}
+            />
             <div>
-                <Header />
-                <MainContent />
+                <main>{activeComponent}</main>
+                <Header/>
+                <MainContent/>
                 <a href="https://vite.dev" target="_blank">
-                    <img src={viteLogo} className="logo" alt="Vite logo" />
+                    <img src={viteLogo} className="logo" alt="Vite logo"/>
                 </a>
                 <a href="https://react.dev" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
+                    <img src={reactLogo} className="logo react" alt="React logo"/>
                 </a>
 
             </div>
-            <App />
+            <App/>
             <div className="card">
                 <button onClick={() => setCount((count) => count + 1)}>
                     count is {count}
@@ -193,9 +211,9 @@ function Appli() {
                 Click on the Vite and React logos to learn more
             </p>
             <Footer />
+
         </>
     );
 }
 
 export default Appli;
-
